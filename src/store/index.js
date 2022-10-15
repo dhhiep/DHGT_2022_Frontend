@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import * as home from '@/store/modules/home.js';
+import * as welcome from '@/store/modules/welcome.js';
 
 Vue.use(Vuex);
 
@@ -10,6 +10,6 @@ export default new Vuex.Store({
   mutations: {},
   actions: {},
   modules: {
-    home,
+    welcome,
   },
 });

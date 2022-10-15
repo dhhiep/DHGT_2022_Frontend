@@ -1,5 +1,5 @@
 <template>
-  <AssetView :assetURL="home.currentAsset" :posterURL="home.currentPoster" />
+  <AssetView :assetURL="welcome.currentAsset" :posterURL="welcome.currentPoster" />
 </template>
 
 <script>
@@ -8,18 +8,16 @@ import AssetView from '@/components/assets/View.vue';
 
 export default {
   created() {
-    this.fetchAssets().then(() => {
-      this.fetchAsset();
-    });
+    this.fetchAsset();
   },
   components: {
     AssetView,
   },
   computed: {
-    ...mapState(['home']),
+    ...mapState(['welcome']),
   },
   methods: {
-    ...mapActions('home', ['fetchAssets', 'fetchAsset']),
+    ...mapActions('welcome', ['fetchAsset']),
   },
 };
 </script>

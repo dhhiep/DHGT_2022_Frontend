@@ -1,8 +1,8 @@
 export const namespaced = true;
 
 import { isVideoPath } from '@/utils/file_extension';
-import axios from 'axios';
 import { randomAssetURL } from '@/utils/assets';
+import * as AssetService from '@/services/asset';
 
 export const state = {
   assets: [],
@@ -32,22 +32,14 @@ export const actions = {
   setPoster({ commit }, poster) {
     commit('SET_POSTER', poster);
   },
-  fetchAssets({ dispatch }) {
-    return axios.get(process.env.VUE_APP_PUBLIC_BUCKET).then((response) => {
-      const assetRegexp = /((lixi|lixi-posters|lixi-tet|lixi-tet-posters)\/(\d|\w)+\.(png|jpg|mp4))/gm;
-      const assetPaths = response.data.match(assetRegexp);
+  fetchAsset({ dispatch }) {
+    return AssetService.fetch().then((asset) => {
+      if (isVideoPath(asset)) {
+        dispatch('fetchVideoPoster');
+      }
 
-      dispatch('setAssets', assetPaths);
+      dispatch('setAsset', asset);
     });
-  },
-  fetchAsset({ dispatch, getters }) {
-    const assetURL = getters.fetchAsset;
-
-    if (isVideoPath(assetURL)) {
-      dispatch('fetchVideoPoster');
-    }
-
-    dispatch('setAsset', assetURL);
   },
   fetchVideoPoster({ dispatch, getters }) {
     dispatch('setPoster', getters.fetchVideoPoster);
