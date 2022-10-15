@@ -4541,6 +4541,11 @@ hosted-git-info@^2.1.4:
   resolved "https://registry.npm.taobao.org/hosted-git-info/download/hosted-git-info-2.8.8.tgz?cache=0&sync_timestamp=1616081440862&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fhosted-git-info%2Fdownload%2Fhosted-git-info-2.8.8.tgz#7539bd4bc1e0e0a895815a2e0262420b12858488"
   integrity sha1-dTm9S8Hg4KiVgVouAmJCCxKFhIg=
 
+hotkeys-js@^3.10.0:
+  version "3.10.0"
+  resolved "https://registry.yarnpkg.com/hotkeys-js/-/hotkeys-js-3.10.0.tgz#2bbd13de4aa002fa916c34e3859239924311e35a"
+  integrity sha512-20xeVdOqcgTkMox0+BqFwADZP7+5dy/9CFPpAinSMh2d0s3b0Hs2V2D+lMh4Hphkf7VE9pwnOl58eP1te+REcg==
+
 hpack.js@^2.1.6:
   version "2.1.6"
   resolved "https://registry.npm.taobao.org/hpack.js/download/hpack.js-2.1.6.tgz#87774c0949e513f42e84575b3c45681fade2a0b2"
