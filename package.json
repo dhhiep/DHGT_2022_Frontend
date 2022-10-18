@@ -5,7 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "clean": "rm -rf dist && mkdir dist",
-    "build": "yarn run clean && vue-cli-service build",
+    "build": "yarn run clean && vue-cli-service build && cp web.config dist/web.config",
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint",
