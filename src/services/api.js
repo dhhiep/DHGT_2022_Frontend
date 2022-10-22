@@ -1,11 +1,5 @@
 import axios from 'axios';
 
-export const getResource = () => {
-  const apiEndpoint = process.env.VUE_APP_BACKEND_URL;
-
-  return apiCaller('GET', apiEndpoint);
-};
-
 export const apiCaller = (method, path, data = {}) => {
   const axiosDefaultSetting = defaultAxiosDefaultSetting(method, path, data);
 
@@ -13,9 +7,11 @@ export const apiCaller = (method, path, data = {}) => {
 };
 
 const defaultAxiosDefaultSetting = (method, path, data = {}) => {
+  const apiEndpoint = process.env.VUE_APP_BACKEND_URL;
+
   let axiosSetting = {
     method: method,
-    url: path,
+    url: apiEndpoint + path,
     withCredentials: false,
     headers: {
       Accept: 'application/json',
