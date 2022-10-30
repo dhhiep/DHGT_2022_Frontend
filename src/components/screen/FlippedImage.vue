@@ -119,7 +119,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 #canvas {
   background: url('../../assets/images/screen/main.jpg');
   width: 800px;

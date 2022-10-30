@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Welcome from '../views/Welcome.vue';
+import Passphrase from '../views/Passphrase.vue';
 import MainScreen from '../views/MainScreen.vue';
 import SubScreen from '../views/SubScreen.vue';
 
@@ -8,19 +9,26 @@ Vue.use(VueRouter);
 
 const routes = [
   {
+    path: '/',
+    name: 'welcome',
+    component: Welcome,
+  },
+  {
+    path: '/passphrase',
+    name: 'passphrase',
+    component: Passphrase,
+  },
+  {
     path: '/main-screen',
-    name: 'MainScreen',
+    name: 'main-screen',
     component: MainScreen,
+    meta: { authenticate: true },
   },
   {
     path: '/sub-screen',
-    name: 'SubScreen',
+    name: 'sub-screen',
     component: SubScreen,
-  },
-  {
-    path: '/',
-    name: 'Welcome',
-    component: Welcome,
+    meta: { authenticate: true },
   },
 ];
 
