@@ -5,7 +5,7 @@
       <img id="qr_code" src="@/assets/images/screen/qrcode.png" alt="" />
     </div>
     <div class="right-side">
-      <FlippedImage ref="mainFlippedImage" />
+      <FlippedImage ref="subFlippedImage" />
     </div>
   </div>
 </template>

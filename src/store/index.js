@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import * as welcome from '@/store/modules/welcome.js';
+import * as welcome from '@/store/modules/welcome';
+import * as flippedImage from '@/store/modules/flipped_image';
 
 Vue.use(Vuex);
 
@@ -11,5 +12,6 @@ export default new Vuex.Store({
   actions: {},
   modules: {
     welcome,
+    flippedImage,
   },
 });
