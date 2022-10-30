@@ -24,12 +24,16 @@ export default {
   created() {
     const self = this;
 
-    hotkeys('right', function (event) {
+    hotkeys('right,f', function (event) {
+      console.log(event);
       event.preventDefault();
       openFullscreen();
-      self.increaseCounter().then(() => {
-        BroadcastChannel.sendMessage({ type: 'increaseCounter' });
-      });
+
+      if (event.key == 'ArrowRight') {
+        self.increaseCounter().then(() => {
+          BroadcastChannel.sendMessage({ type: 'increaseCounter' });
+        });
+      }
     });
   },
   methods: {
