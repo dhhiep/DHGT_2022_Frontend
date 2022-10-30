@@ -25,13 +25,12 @@ export default {
     const self = this;
 
     hotkeys('right,f', function (event) {
-      console.log(event);
       event.preventDefault();
       openFullscreen();
 
       if (event.key == 'ArrowRight') {
         self.increaseCounter().then(() => {
-          BroadcastChannel.sendMessage({ type: 'increaseCounter' });
+          BroadcastChannel.sendMessage({ type: 'counterUpdated' });
         });
       }
     });

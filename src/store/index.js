@@ -4,6 +4,7 @@ import Vuex from 'vuex';
 import * as auth from '@/store/modules/auth';
 import * as welcome from '@/store/modules/welcome';
 import * as flippedImage from '@/store/modules/flipped_image';
+import * as setting from '@/store/modules/setting';
 
 Vue.use(Vuex);
 
@@ -15,5 +16,6 @@ export default new Vuex.Store({
     auth,
     welcome,
     flippedImage,
+    setting,
   },
 });

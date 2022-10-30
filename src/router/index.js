@@ -4,6 +4,7 @@ import Welcome from '../views/Welcome.vue';
 import Passphrase from '../views/Passphrase.vue';
 import MainScreen from '../views/MainScreen.vue';
 import SubScreen from '../views/SubScreen.vue';
+import Setting from '../views/Setting.vue';
 
 Vue.use(VueRouter);
 
@@ -28,6 +29,12 @@ const routes = [
     path: '/sub-screen',
     name: 'sub-screen',
     component: SubScreen,
+    meta: { authenticate: true },
+  },
+  {
+    path: '/settings',
+    name: 'settings',
+    component: Setting,
     meta: { authenticate: true },
   },
 ];

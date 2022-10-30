@@ -22,7 +22,13 @@ export default {
       JQuery('#canvas').css('opacity', 1);
     }, 1000);
 
-    BroadcastChannel.onMessage('increaseCounter', () => {
+    BroadcastChannel.onMessage('resetCounter', () => {
+      JQuery('.cell').addClass('flipped');
+      this.resetFlippedImageData();
+      this.showCells();
+    });
+
+    BroadcastChannel.onMessage('counterUpdated', () => {
       this.reloadFlippedImageData();
       this.showCells();
     });
@@ -111,7 +117,7 @@ export default {
         console.log(`[error] ${error.message}`);
       };
     },
-    ...mapActions('flippedImage', ['reloadFlippedImageData', 'setFlippedImageData']),
+    ...mapActions('flippedImage', ['reloadFlippedImageData', 'resetFlippedImageData', 'setFlippedImageData']),
   },
   computed: {
     ...mapGetters('flippedImage', ['currentOpenPieces']),
