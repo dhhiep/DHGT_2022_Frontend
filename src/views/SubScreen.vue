@@ -61,7 +61,7 @@ export default {
     justify-content: space-between;
     margin-right: 50px;
     #counter {
-      font-size: 140px;
+      font-size: 130px;
       font-family: 'Roboto', sans-serif;
       text-align: center;
       height: 50%;
