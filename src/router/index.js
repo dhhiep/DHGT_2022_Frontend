@@ -4,7 +4,8 @@ import Welcome from '../views/Welcome.vue';
 import Passphrase from '../views/Passphrase.vue';
 import MainScreen from '../views/MainScreen.vue';
 import SubScreen from '../views/SubScreen.vue';
-import MiniScreen from '../views/MiniScreen.vue';
+import QRScreen from '../views/QRScreen.vue';
+import VideoScreen from '../views/VideoScreen.vue';
 import Setting from '../views/Setting.vue';
 
 Vue.use(VueRouter);
@@ -33,9 +34,9 @@ const routes = [
     meta: { authenticate: true },
   },
   {
-    path: '/mini-screen',
-    name: 'mini-screen',
-    component: MiniScreen,
+    path: '/qr-screen',
+    name: 'qr-screen',
+    component: QRScreen,
     meta: { authenticate: true },
   },
   {
