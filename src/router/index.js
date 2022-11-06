@@ -40,6 +40,12 @@ const routes = [
     meta: { authenticate: true },
   },
   {
+    path: '/video-screen',
+    name: 'video-screen',
+    component: VideoScreen,
+    meta: { authenticate: true },
+  },
+  {
     path: '/settings',
     name: 'settings',
     component: Setting,
