@@ -4,8 +4,12 @@
       <div id="counter">{{ currentCounter }}</div>
       <img id="qr_code" src="@/assets/images/screen/qrcode.png" alt="" />
     </div>
-    <div class="right-side">
+    <div class="center-side">
       <FlippedImage ref="mainFlippedImage" />
+    </div>
+    <div class="right-side">
+      <div id="counter">{{ currentCounter }}</div>
+      <img id="qr_code" src="@/assets/images/screen/qrcode.png" alt="" />
     </div>
   </div>
 </template>
@@ -52,14 +56,14 @@ export default {
   height: 100vh;
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
-  .left-side {
+  .left-side,
+  .right-side {
     display: flex;
     height: 600px;
     flex-direction: column;
     justify-content: space-between;
-    margin-right: 50px;
     #counter {
       font-size: 130px;
       font-family: 'Roboto', sans-serif;
@@ -74,7 +78,8 @@ export default {
       max-width: 100%;
     }
   }
-  .right-side {
+  .center-side {
+    margin: 0 50px;
   }
 }
 </style>
