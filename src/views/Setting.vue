@@ -4,9 +4,25 @@
       <button class="reset-counter" @click="reset">Reset Counter</button>
     </div>
     <div class="row">
-      <button class="increase-counter-online" @click="triggerIncreaseCounterOnline">Increase Counter (Online)</button>
-      <button class="increase-counter-offline" @click="triggerIncreaseCounterOffline">
-        Increase Counter (Offline)
+      <div class="heading">Increase Counter Online (in 10 seconds):</div>
+      <button
+        class="increase-counter-online"
+        @click="triggerIncreaseCounterOnline(times)"
+        v-for="(times, index) in increaseTimes"
+        :key="index"
+      >
+        Increase {{ times }} Counter(s)
+      </button>
+    </div>
+    <div class="row">
+      <div class="heading">Increase Counter Offline (in 10 seconds):</div>
+      <button
+        class="increase-counter-offline"
+        @click="triggerIncreaseCounterOffline(times)"
+        v-for="(times, index) in increaseTimes"
+        :key="index"
+      >
+        Increase {{ times }} Counter(s)
       </button>
     </div>
   </div>
@@ -20,19 +36,31 @@ export default {
   data() {
     return {
       passphrase: '',
+      increaseTimes: [10, 50, 100, 200, 300, 1000],
     };
   },
-  mounted() {},
   methods: {
-    triggerIncreaseCounterOnline() {
-      this.increaseCounterOnline().then((resp) => {
-        console.log(resp.data.data);
+    getRandomInt(max) {
+      return Math.floor(Math.random() * max);
+    },
+    triggerIncreaseCounterOnline(times) {
+      Array.from({ length: times }, () => {
+        setTimeout(() => {
+          this.increaseCounterOnline().then((resp) => {
+            console.log(resp.data.data);
+          });
+        }, this.getRandomInt(10000 + times * 100));
       });
     },
-    triggerIncreaseCounterOffline() {
+    triggerIncreaseCounterOffline(times) {
       this.reloadFlippedImageData();
-      this.increaseCounter().then(() => {
-        BroadcastChannel.sendMessage({ type: 'counterUpdated' });
+
+      Array.from({ length: times }, () => {
+        setTimeout(() => {
+          this.increaseCounter().then(() => {
+            BroadcastChannel.sendMessage({ type: 'counterUpdated' });
+          });
+        }, this.getRandomInt(10000 + times * 100));
       });
     },
     reset() {
@@ -73,9 +101,8 @@ export default {
   width: 100%;
   height: 100vh;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   flex-direction: column;
-
   button {
     cursor: pointer;
     padding: 8px 15px;
@@ -96,6 +123,12 @@ export default {
 
   .row {
     flex-direction: row;
+    margin-bottom: 10px;
+    .heading {
+      padding: 0 10px;
+      font-family: arial;
+      font-weight: 15px;
+    }
   }
 }
 </style>
