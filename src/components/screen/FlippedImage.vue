@@ -1,26 +1,46 @@
 <template>
-  <div id="canvas"></div>
+  <div id="main-view" :style="mainViewStyles">
+    <div id="canvas" :style="mainImageStyles" v-show="!isPiecesOpened"></div>
+    <div id="video" v-if="isPiecesOpened">
+      <video :style="mainVideoStyles" autoplay muted>
+        <source :src="videoUrl" type="video/mp4" />
+      </video>
+    </div>
+  </div>
 </template>
 
 <script>
 import JQuery from 'jquery';
 import { mapActions, mapGetters } from 'vuex';
+import { assetPath, resize } from '@/helpers/image';
 import * as BroadcastChannel from '@/utils/broadcast_channel';
 
 export default {
   data() {
     return {
+      col: 10,
+      row: 10,
       cells: [],
+      imageUrl: '',
+      videoUrl: 'https://dhgt2022-frontend-app.s3.ap-southeast-1.amazonaws.com/welcome.mp4',
     };
+  },
+  props: {
+    mainImage: {
+      type: String,
+      default: 'screen/main.png',
+    },
+    width: {
+      type: Number,
+      default: 1066,
+    },
+    height: {
+      type: Number,
+      default: 600,
+    },
   },
   created() {
     this.establish_ws_broadcast_channel();
-
-    setTimeout(() => {
-      this.process();
-      this.showCells();
-      JQuery('#canvas').css('opacity', 1);
-    }, 1000);
 
     BroadcastChannel.onMessage('resetCounter', () => {
       JQuery('.cell').addClass('flipped');
@@ -32,6 +52,42 @@ export default {
       this.reloadFlippedImageData();
       this.showCells();
     });
+
+    if (this.isPiecesOpened) {
+      setTimeout(() => {
+        JQuery('video').get(0).play();
+      }, 500);
+    } else {
+      resize(assetPath(this.mainImage), 1066, 600).then((dataUrl) => {
+        this.imageUrl = dataUrl;
+        setTimeout(() => {
+          this.process();
+          this.showCells();
+          JQuery('#canvas').css('opacity', 1);
+        }, 500);
+
+        JQuery('#canvas').attr('style', this.mainImageStyles);
+      });
+    }
+  },
+  computed: {
+    mainViewStyles() {
+      const styles = [`width: ${this.width}px`, `height: ${this.height}px`];
+      return styles.join(';');
+    },
+    mainVideoStyles() {
+      const styles = [`width: ${this.width}px`, `height: ${this.height}px`];
+      return styles.join(';');
+    },
+    mainImageStyles() {
+      const styles = [`width: ${this.width}px`, `height: ${this.height}px`, `background-image: url(${this.imageUrl})`];
+      return styles.join(';');
+    },
+    isPiecesOpened() {
+      const totalPieces = this.col * this.row;
+      return this.currentOpenPieces >= totalPieces;
+    },
+    ...mapGetters('flippedImage', ['currentOpenPieces']),
   },
   methods: {
     showCells() {
@@ -39,13 +95,6 @@ export default {
         const cell = JQuery(`.cell.cell-${cellIndex}.flipped`);
         cell.removeClass('flipped');
       });
-    },
-    showCell() {
-      console.log('show', this.cells.length);
-      if (this.cells.length <= 0) return;
-
-      const cell = this.cells.pop();
-      JQuery(cell).removeClass('flipped');
     },
     process() {
       const canvas = JQuery('#canvas');
@@ -55,15 +104,13 @@ export default {
       canvas.css('background-image', 'none');
 
       // number of columns and rows
-      const col = 10;
-      const row = 10;
-      let totalPieceIndexes = col * row - 1;
+      let totalPieceIndexes = this.col * this.row - 1;
 
-      const colWidth = canvas.width() / col;
-      const rowHeight = canvas.height() / row;
+      const colWidth = canvas.width() / this.col;
+      const rowHeight = canvas.height() / this.row;
 
-      for (let i = 0; i < row; i++) {
-        for (let j = 0; j < col; j++) {
+      for (let i = 0; i < this.row; i++) {
+        for (let j = 0; j < this.col; j++) {
           const cellTop = i * rowHeight + 'px';
           const cellLeft = j * colWidth + 'px';
           const cellBackgroundPosition = -(j * colWidth) + 'px ' + -(i * rowHeight) + 'px';
@@ -119,23 +166,26 @@ export default {
     },
     ...mapActions('flippedImage', ['reloadFlippedImageData', 'resetFlippedImageData', 'setFlippedImageData']),
   },
-  computed: {
-    ...mapGetters('flippedImage', ['currentOpenPieces']),
-  },
 };
 </script>
 
 <style lang="scss">
+#main-view {
+  position: relative;
+  #video {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}
+
 #canvas {
-  background: url('../../assets/images/screen/main.jpg');
-  width: 800px;
-  height: 600px;
+  background-repeat: round;
   position: relative;
   opacity: 0;
 }
 .cell {
   position: absolute;
-  cursor: pointer;
   > .front {
     -webkit-transform-style: preserve-3d;
     transition: all 1s;
