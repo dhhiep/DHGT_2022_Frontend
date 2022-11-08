@@ -2,19 +2,17 @@ export const namespaced = true;
 
 import { isVideoPath } from '@/utils/file_extension';
 import { randomAssetURL } from '@/utils/assets';
+import { storeLocalAsset } from '@/services/localStorage';
 import * as AssetService from '@/services/asset';
 
 export const state = {
-  assets: [],
   currentAsset: '',
   currentPoster: '',
 };
 
 export const mutations = {
-  SET_ASSETS(state, assets) {
-    state.assets = assets;
-  },
   SET_ASSET(state, asset) {
+    storeLocalAsset(asset);
     state.currentAsset = asset;
   },
   SET_POSTER(state, poster) {

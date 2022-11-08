@@ -2,12 +2,16 @@ import store from '@/store/index.js';
 
 const KEYS = {
   AUTH: 'localAuth',
+  ASSET: 'localAsset',
   FLIPPED_IMAGE: 'localFlippedImageData',
 };
 
 //  STORE LOCAL DATA
 export const storeLocalAuth = (authData) => {
   return setItem(KEYS.AUTH, authData);
+};
+export const storeLocalAsset = (assetData) => {
+  return setItem(KEYS.ASSET, assetData);
 };
 export const storeLocalFlippedImageData = (flippedImageData) => {
   return setItem(KEYS.FLIPPED_IMAGE, flippedImageData);
@@ -17,6 +21,9 @@ export const storeLocalFlippedImageData = (flippedImageData) => {
 export const loadLocalAuth = () => {
   return getItem(KEYS.AUTH);
 };
+export const loadLocalAsset = () => {
+  return getItem(KEYS.ASSET);
+};
 export const loadLocalFlippedImageData = () => {
   return getItem(KEYS.FLIPPED_IMAGE);
 };
@@ -24,6 +31,9 @@ export const loadLocalFlippedImageData = () => {
 //  CLEAR LOCAL DATA
 export const clearLocalFlippedImageData = () => {
   return removeItem(KEYS.FLIPPED_IMAGE);
+};
+export const clearLocalAsset = () => {
+  return removeItem(KEYS.ASSET);
 };
 
 // OTHER FUNCTIONS

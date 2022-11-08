@@ -1,22 +1,21 @@
 import { apiCaller } from '@/services/api';
-import * as storage from '@/utils/storage';
+import { storeLocalAsset, loadLocalAsset } from '@/services/localStorage';
+import { isPresent } from '@/utils/lang';
+// import { clearLocalAsset } from '@/services/localStorage';
 
 export const fetch = () => {
   return new Promise((resolve) => {
-    const currentResourceKey = 'currentResource';
-    // const latestResourceURL = storage.load(currentResourceKey);
-
     // TODO: Disable feature using previous asset. Remove it when go live.
-    const latestResourceURL = null;
+    // clearLocalAsset();
 
-    if (latestResourceURL) {
-      resolve(latestResourceURL);
+    if (isPresent(loadLocalAsset())) {
+      resolve(loadLocalAsset());
     } else {
       apiCaller('POST', '/api/register').then((resp) => {
-        const resourceURL = `${process.env.VUE_APP_PUBLIC_BUCKET}/${resp.data.data.image_file_name}`;
-        storage.store(currentResourceKey, resourceURL);
-
-        resolve(resourceURL);
+        let resource = resp.data.data;
+        resource.imageUrl = `${process.env.VUE_APP_PUBLIC_BUCKET}/${resource.image_file_name}`;
+        storeLocalAsset(resource);
+        resolve(resource);
       });
     }
   });
