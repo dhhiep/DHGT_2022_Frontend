@@ -1,21 +1,24 @@
 <template>
   <div class="screen">
-    <div class="left-side">
-      <div id="counter">{{ currentCounter }}</div>
-      <img id="qr_code" src="@/assets/images/screen/qrcode.png" alt="" />
-    </div>
-    <div class="center-side">
-      <FlippedImage ref="mainFlippedImage" />
-    </div>
-    <div class="right-side">
-      <div id="counter">{{ currentCounter }}</div>
-      <img id="qr_code" src="@/assets/images/screen/qrcode.png" alt="" />
+    <div class="row">
+      <div class="left-side">
+        <div id="counter">{{ currentCounter }}</div>
+        <img id="qr_code" src="@/assets/images/screen/qrcode.png" alt="" />
+      </div>
+      <div class="center-side">
+        <FlippedImage ref="mainFlippedImage" :width="screenWidth" />
+      </div>
+      <div class="right-side">
+        <div id="counter">{{ currentCounter }}</div>
+        <img id="qr_code" src="@/assets/images/screen/qrcode.png" alt="" />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex';
+import JQuery from 'jquery';
 import hotkeys from 'hotkeys-js';
 import { openFullscreen } from '@/utils/browser';
 import * as BroadcastChannel from '@/utils/broadcast_channel';
@@ -38,11 +41,16 @@ export default {
         });
       }
     });
+
+    console.log(this.screenWidth);
   },
   methods: {
     ...mapActions('flippedImage', ['increaseCounter']),
   },
   computed: {
+    screenWidth() {
+      return JQuery(window).width() - 800;
+    },
     ...mapState(['screen']),
     ...mapGetters('flippedImage', ['currentCounter', 'currentOpenPieces']),
   },
@@ -53,28 +61,30 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap');
 
 .screen {
-  height: 100vh;
+  // height: 100vh;
   width: 100%;
   display: flex;
-  justify-content: space-around;
-  align-items: center;
+  .row {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 20px;
+    width: 100%;
+    // height: 600px;
+  }
   .left-side,
   .right-side {
     display: flex;
-    height: 600px;
     flex-direction: column;
     justify-content: space-between;
+    height: 100%;
     #counter {
-      font-size: 130px;
       font-family: 'Roboto', sans-serif;
+      font-size: 130px;
       text-align: center;
-      height: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
     }
     #qr_code {
-      width: 300px;
+      width: 100%;
       max-width: 100%;
     }
   }
