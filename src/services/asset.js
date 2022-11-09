@@ -1,12 +1,12 @@
 import { apiCaller } from '@/services/api';
 import { storeLocalAsset, loadLocalAsset } from '@/services/localStorage';
+import { clearLocalAsset } from '@/services/localStorage';
 import { isPresent } from '@/utils/lang';
-// import { clearLocalAsset } from '@/services/localStorage';
 
 export const fetch = () => {
   return new Promise((resolve) => {
     // TODO: Disable feature using previous asset. Remove it when go live.
-    // clearLocalAsset();
+    clearLocalAsset();
 
     if (isPresent(loadLocalAsset())) {
       resolve(loadLocalAsset());
