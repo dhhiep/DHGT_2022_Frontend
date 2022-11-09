@@ -1,5 +1,12 @@
 <template>
   <div id="settings">
+    <div class="row links">
+      <a href="/main-screen" target="_new">Main Screen</a>
+      <a href="/sub-screen" target="_new">Sub Screen</a>
+      <a href="/video-screen" target="_new">Video Screen</a>
+      <a href="/qr-screen" target="_new">QR Screen</a>
+    </div>
+    <hr />
     <div class="row">
       <button class="reset-counter" @click="reset">Reset Counter</button>
     </div>
@@ -124,6 +131,17 @@ export default {
   .row {
     flex-direction: row;
     margin-bottom: 10px;
+    &.links {
+      margin-bottom: 40px;
+      text-align: center;
+      width: 100%;
+      a {
+        font-family: Arial, Helvetica, sans-serif;
+        margin: 10px;
+        text-decoration: none;
+        font-size: 18px;
+      }
+    }
     .heading {
       padding: 0 10px;
       font-family: arial;
