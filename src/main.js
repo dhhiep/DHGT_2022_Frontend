@@ -7,6 +7,7 @@ import VueSweetalert2 from 'vue-sweetalert2';
 import { restoreLocalData } from '@/services/localStorage';
 
 import 'sweetalert2/dist/sweetalert2.min.css';
+import 'animate.css';
 
 Vue.config.productionTip = false;
 
