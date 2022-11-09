@@ -18,26 +18,20 @@ import * as BroadcastChannel from '@/utils/broadcast_channel';
 export default {
   data() {
     return {
+      cells: [],
       col: 10,
       row: 10,
-      cells: [],
+      aspectRatio: 16 / 9,
       imageUrl: '',
+      mainImagePath: 'screen/main.png',
       videoUrl: 'https://dhgt2022-frontend-app.s3.ap-southeast-1.amazonaws.com/welcome.mp4',
       isVideoPlayed: false,
     };
   },
   props: {
-    mainImage: {
-      type: String,
-      default: 'screen/main.png',
-    },
     width: {
       type: Number,
       default: 1066,
-    },
-    height: {
-      type: Number,
-      default: 600,
     },
   },
   created() {
@@ -55,7 +49,7 @@ export default {
       this.showCells({ animation: true });
     });
 
-    resize(assetPath(this.mainImage), 1066, 600).then((dataUrl) => {
+    resize(assetPath(this.mainImagePath), 1066, 600).then((dataUrl) => {
       this.imageUrl = dataUrl;
       setTimeout(() => {
         this.process();
@@ -67,6 +61,9 @@ export default {
     });
   },
   computed: {
+    height() {
+      return this.width / this.aspectRatio;
+    },
     mainViewStyles() {
       const styles = [`width: ${this.width}px`, `height: ${this.height}px`];
       return styles.join(';');
