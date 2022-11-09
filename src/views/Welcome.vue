@@ -29,18 +29,10 @@ import { mapState, mapActions } from 'vuex';
 
 export default {
   data() {
-    return {
-      // height: 1920,
-      // width: 1080,
-    };
+    return {};
   },
   created() {
     this.fetchAsset();
-
-    // this.getImageSize().then((imageSize) => {
-    //   this.width = imageSize.width;
-    //   this.height = imageSize.height;
-    // });
   },
   computed: {
     mainViewStyles() {
