@@ -1,10 +1,10 @@
 <template>
   <div id="settings">
     <div class="row links">
-      <a href="/main-screen" target="_new">Main Screen</a>
-      <a href="/sub-screen" target="_new">Sub Screen</a>
-      <a href="/video-screen" target="_new">Video Screen</a>
-      <a href="/qr-screen" target="_new">QR Screen</a>
+      <a href="/main-screen" target="_blank">Main Screen</a>
+      <a href="/sub-screen" target="_blank">Sub Screen</a>
+      <a href="/video-screen" target="_blank">Video Screen</a>
+      <a href="/qr-screen" target="_blank">QR Screen</a>
     </div>
     <hr />
     <div class="row">
