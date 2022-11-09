@@ -2,6 +2,8 @@ export const namespaced = true;
 
 import { storeLocalFlippedImageData, loadLocalFlippedImageData } from '@/services/localStorage';
 
+const MAX_COUNTERS = 1000;
+
 export const state = {
   flippedImageData: { counter: 0, pieces: 0, ratio: 10 },
 };
@@ -17,6 +19,7 @@ export const actions = {
   setFlippedImageData({ commit }, flippedImageData) {
     // Only using newest data (when counter from server greater than counter stored on client)
     if (state.flippedImageData.counter && flippedImageData.counter < state.flippedImageData.counter) return;
+    if (flippedImageData.counter > MAX_COUNTERS) return;
 
     return commit('SET_FLIPPED_IMAGE_DATA', flippedImageData);
   },
