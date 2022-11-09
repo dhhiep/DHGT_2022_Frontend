@@ -2,7 +2,7 @@
   <div id="main-view" :style="mainViewStyles">
     <div id="canvas" :style="mainImageStyles" v-show="!isPiecesOpened"></div>
     <div id="video" v-if="isPiecesOpened">
-      <video :style="mainVideoStyles" autoplay muted>
+      <video :style="mainVideoStyles">
         <source :src="videoUrl" type="video/mp4" />
       </video>
     </div>
@@ -23,6 +23,7 @@ export default {
       cells: [],
       imageUrl: '',
       videoUrl: 'https://dhgt2022-frontend-app.s3.ap-southeast-1.amazonaws.com/welcome.mp4',
+      isVideoPlayed: false,
     };
   },
   props: {
@@ -41,34 +42,29 @@ export default {
   },
   created() {
     this.establish_ws_broadcast_channel();
+    this.playVideo();
 
     BroadcastChannel.onMessage('resetCounter', () => {
-      JQuery('.cell').addClass('flipped');
       this.resetFlippedImageData();
       this.showCells();
+      this.resetCells();
     });
 
     BroadcastChannel.onMessage('counterUpdated', () => {
       this.reloadFlippedImageData();
-      this.showCells();
+      this.showCells({ animation: true });
     });
 
-    if (this.isPiecesOpened) {
+    resize(assetPath(this.mainImage), 1066, 600).then((dataUrl) => {
+      this.imageUrl = dataUrl;
       setTimeout(() => {
-        JQuery('video').get(0).play();
+        this.process();
+        this.showCells();
+        JQuery('#canvas').css('opacity', 1);
       }, 500);
-    } else {
-      resize(assetPath(this.mainImage), 1066, 600).then((dataUrl) => {
-        this.imageUrl = dataUrl;
-        setTimeout(() => {
-          this.process();
-          this.showCells();
-          JQuery('#canvas').css('opacity', 1);
-        }, 500);
 
-        JQuery('#canvas').attr('style', this.mainImageStyles);
-      });
-    }
+      JQuery('#canvas').attr('style', this.mainImageStyles);
+    });
   },
   computed: {
     mainViewStyles() {
@@ -90,11 +86,30 @@ export default {
     ...mapGetters('flippedImage', ['currentOpenPieces']),
   },
   methods: {
-    showCells() {
+    resetCells() {
+      this.isVideoPlayed = false;
+      JQuery('.cell').addClass('hidden').removeClass('animate__animated animate__bounceInDown');
+    },
+    showCells(options = {}) {
       [...Array(this.currentOpenPieces || 0).keys()].forEach((cellIndex) => {
-        const cell = JQuery(`.cell.cell-${cellIndex}.flipped`);
-        cell.removeClass('flipped');
+        const cell = JQuery(`.cell.cell-${cellIndex}.hidden`);
+        cell.removeClass('hidden');
+
+        if (options.animation) {
+          cell.addClass('animate__animated animate__bounceInDown');
+        }
       });
+    },
+    playVideo() {
+      setInterval(() => {
+        const video = JQuery('video').get(0);
+        if (!this.isPiecesOpened || this.isVideoPlayed || !video) return;
+
+        video
+          .play()
+          .then(() => (this.isVideoPlayed = true))
+          .catch(() => console.log("Can't play video"));
+      }, 2000);
     },
     process() {
       const canvas = JQuery('#canvas');
@@ -115,7 +130,7 @@ export default {
           const cellLeft = j * colWidth + 'px';
           const cellBackgroundPosition = -(j * colWidth) + 'px ' + -(i * rowHeight) + 'px';
           const cellElement = `
-            <div class='cell cell-${totalPieceIndexes--} flipped'>
+            <div class='cell cell-${totalPieceIndexes--} hidden'>
               <div class='back'></div>
               <div class='front'></div>
             </div>
@@ -146,7 +161,7 @@ export default {
 
         console.log('onMessage', data);
         self.setFlippedImageData(data);
-        self.showCells();
+        self.showCells({ animation: true });
       };
 
       socket.onclose = function (event) {
@@ -187,12 +202,10 @@ export default {
 .cell {
   position: absolute;
   > .front {
-    -webkit-transform-style: preserve-3d;
-    transition: all 1s;
+    opacity: 1;
   }
-  &:not(.flipped) {
+  &:not(.hidden) {
     > .back {
-      -webkit-transform: rotateY(180deg);
       z-index: 0;
       display: none;
     }
@@ -219,9 +232,9 @@ export default {
     height: 100%;
   }
 }
-.cell.flipped {
+.cell.hidden {
   > .front {
-    -webkit-transform: rotateY(180deg);
+    opacity: 0;
   }
 }
 .back {
