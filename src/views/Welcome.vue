@@ -10,8 +10,7 @@
           <div id="counter">{{ welcome.currentAsset.count_user_scan }}</div>
           <div id="main-content">
             <div class="content">
-              Ôi, tới con số này rồi sao, nhanh thật đấy 😮 Nhanh tay truyền tiếp QR code thôiiii. Anh chị em xung quanh
-              con có người chưa nhận được code đấy. Hãy truyền tới họ đi nào. Cảm ơn con nhiều ^^
+              {{ welcome.currentAsset.wish_content }}
             </div>
             <div id="jesus_signature">Jesus.</div>
           </div>
