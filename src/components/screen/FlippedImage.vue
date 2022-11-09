@@ -49,7 +49,7 @@ export default {
       this.showCells({ animation: true });
     });
 
-    resize(assetPath(this.mainImagePath), 1066, 600).then((dataUrl) => {
+    resize(assetPath(this.mainImagePath), this.width, this.height).then((dataUrl) => {
       this.imageUrl = dataUrl;
       setTimeout(() => {
         this.process();
