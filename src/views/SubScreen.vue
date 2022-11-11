@@ -1,11 +1,13 @@
 <template>
   <div class="screen">
-    <div class="left-side">
-      <div id="counter">{{ currentCounter }}</div>
-      <img id="qr_code" src="@/assets/images/screen/qrcode.png" alt="" />
-    </div>
-    <div class="right-side">
-      <FlippedImage ref="subFlippedImage" heigh="600" />
+    <div class="row">
+      <div class="left-side">
+        <div id="counter">{{ currentCounter }}</div>
+        <img id="qr_code" src="@/assets/images/screen/qrcode.png" alt="" />
+      </div>
+      <div class="right-side">
+        <FlippedImage ref="subFlippedImage" :height="height" />
+      </div>
     </div>
   </div>
 </template>
@@ -39,6 +41,9 @@ export default {
     ...mapActions('flippedImage', ['increaseCounter']),
   },
   computed: {
+    height() {
+      return this.$route.query.height || 600;
+    },
     ...mapState(['screen']),
     ...mapGetters('flippedImage', ['currentCounter', 'currentOpenPieces']),
   },
@@ -49,32 +54,34 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap');
 
 .screen {
-  height: 100vh;
   width: 100%;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  padding-top: 50px;
+  .row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    width: 100%;
+  }
   .left-side {
     display: flex;
-    height: 600px;
     flex-direction: column;
     justify-content: space-between;
-    margin-right: 50px;
+    height: 100%;
+    margin-right: 30px;
     #counter {
-      font-size: 130px;
       font-family: 'Roboto', sans-serif;
+      font-size: 130px;
       text-align: center;
-      height: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
     }
     #qr_code {
-      width: 300px;
+      width: 100%;
       max-width: 100%;
     }
   }
   .right-side {
+    margin-left: 30px;
   }
 }
 </style>
