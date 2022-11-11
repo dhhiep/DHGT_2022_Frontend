@@ -26,6 +26,7 @@ export default {
       mainImagePath: 'screen/main.jpg',
       videoUrl: 'https://dhgt2022-frontend-app.s3.ap-southeast-1.amazonaws.com/welcome2.mp4',
       isVideoPlayed: false,
+      animationClasses: 'animate__animated animate__bounceInDown',
     };
   },
   props: {
@@ -85,7 +86,7 @@ export default {
   methods: {
     resetCells() {
       this.isVideoPlayed = false;
-      JQuery('.cell').addClass('hidden').removeClass('animate__animated animate__bounceInDown');
+      JQuery('.cell').addClass('hidden').removeClass(this.animationClasses);
     },
     showCells(options = {}) {
       [...Array(this.currentOpenPieces || 0).keys()].forEach((cellIndex) => {
@@ -93,8 +94,12 @@ export default {
         cell.removeClass('hidden');
 
         if (options.animation) {
-          cell.addClass('animate__animated animate__bounceInDown');
+          cell.addClass(this.animationClasses);
         }
+
+        setTimeout(() => {
+          cell.removeClass(this.animationClasses);
+        }, 1000);
       });
     },
     playVideo() {

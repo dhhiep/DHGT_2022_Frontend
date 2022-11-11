@@ -1,8 +1,8 @@
 <template>
   <div id="settings">
     <div class="row links">
+      <a href="/screen" target="_blank">Screen</a>
       <a href="/main-screen" target="_blank">Main Screen</a>
-      <a href="/sub-screen" target="_blank">Sub Screen</a>
       <a href="/video-screen" target="_blank">Video Screen</a>
       <a href="/qr-screen" target="_blank">QR Screen</a>
     </div>
