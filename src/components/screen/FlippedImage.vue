@@ -37,7 +37,7 @@ export default {
     },
   },
   created() {
-    this.establish_ws_connection();
+    establish_ws_broadcast_channel(this.ws_on_open, this.ws_on_message);
     this.playVideo();
 
     BroadcastChannel.onMessage('resetCounter', () => {
@@ -152,13 +152,21 @@ export default {
       socket.send('#status');
     },
     ws_on_message(data) {
+      if (data.type === 'reset') {
+        console.log('[FlippedImage#ws_on_message] Reset counter');
+
+        this.resetFlippedImageData().then(() => {
+          BroadcastChannel.sendMessage({ type: 'resetCounter' });
+        });
+
+        this.resetCells();
+      }
+
       this.setFlippedImageData(data);
       this.showCells({ animation: true });
     },
-    establish_ws_connection() {
-      establish_ws_broadcast_channel(this.ws_on_open, this.ws_on_message);
-    },
     ...mapActions('flippedImage', ['reloadFlippedImageData', 'resetFlippedImageData', 'setFlippedImageData']),
+    ...mapActions('setting', ['resetCounter']),
   },
 };
 </script>
