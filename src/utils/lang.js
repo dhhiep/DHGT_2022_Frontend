@@ -1,6 +1,8 @@
 import isEmpty from 'lodash/isEmpty';
 import isNumber from 'lodash/isNumber';
 
+export const blankFunc = () => {};
+
 export const isPresent = (value) => {
   return !isBlank(value);
 };

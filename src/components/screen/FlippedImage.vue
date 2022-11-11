@@ -13,6 +13,7 @@
 import JQuery from 'jquery';
 import { mapActions, mapGetters } from 'vuex';
 import { assetPath, resize } from '@/helpers/image';
+import { establish_ws_broadcast_channel } from '@/utils/websocket_broadcast';
 import * as BroadcastChannel from '@/utils/broadcast_channel';
 
 export default {
@@ -36,7 +37,7 @@ export default {
     },
   },
   created() {
-    this.establish_ws_broadcast_channel();
+    this.establish_ws_connection();
     this.playVideo();
 
     BroadcastChannel.onMessage('resetCounter', () => {
@@ -147,39 +148,15 @@ export default {
         }
       }
     },
-    establish_ws_broadcast_channel() {
-      console.log('Starting connection to WebSocket Server');
-
-      const self = this;
-      let socket = new WebSocket(process.env.VUE_APP_BACKEND_WS_URL);
-
-      socket.onopen = function () {
-        console.log('[open] Connection established');
-        socket.send('#status');
-      };
-
-      socket.onmessage = function (event) {
-        const data = JSON.parse(event.data.replace('Data: ', ''));
-
-        console.log('onMessage', data);
-        self.setFlippedImageData(data);
-        self.showCells({ animation: true });
-      };
-
-      socket.onclose = function (event) {
-        if (event.wasClean) {
-          console.log(`[onclose] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
-        } else {
-          console.log('[onclose] Connection died');
-        }
-
-        console.log('[onclose] Trying to re-connect');
-        self.establish_ws_broadcast_channel();
-      };
-
-      socket.onerror = function (error) {
-        console.log(`[error] ${error.message}`);
-      };
+    ws_on_open(socket) {
+      socket.send('#status');
+    },
+    ws_on_message(data) {
+      this.setFlippedImageData(data);
+      this.showCells({ animation: true });
+    },
+    establish_ws_connection() {
+      establish_ws_broadcast_channel(this.ws_on_open, this.ws_on_message);
     },
     ...mapActions('flippedImage', ['reloadFlippedImageData', 'resetFlippedImageData', 'setFlippedImageData']),
   },
