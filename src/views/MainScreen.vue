@@ -6,7 +6,7 @@
         <img id="qr_code" src="@/assets/images/screen/qrcode.png" alt="" />
       </div>
       <div class="center-side">
-        <FlippedImage ref="mainFlippedImage" :width="screenWidth" />
+        <FlippedImage ref="mainFlippedImage" :width="screenHeight" />
       </div>
       <div class="right-side">
         <div id="counter">{{ currentCounter }}</div>
@@ -25,6 +25,11 @@ import * as BroadcastChannel from '@/utils/broadcast_channel';
 import FlippedImage from '@/components/screen/FlippedImage.vue';
 
 export default {
+  data() {
+    return {
+      aspectRatio: 4 / 3,
+    };
+  },
   components: {
     FlippedImage,
   },
@@ -42,14 +47,16 @@ export default {
       }
     });
 
-    console.log(this.screenWidth);
+    console.log(this.screenHeight);
   },
   methods: {
     ...mapActions('flippedImage', ['increaseCounter']),
   },
   computed: {
-    screenWidth() {
-      return JQuery(window).width() - 800;
+    screenHeight() {
+      const width = JQuery(window).width() - 800;
+
+      return width / this.aspectRatio;
     },
     ...mapState(['screen']),
     ...mapGetters('flippedImage', ['currentCounter', 'currentOpenPieces']),

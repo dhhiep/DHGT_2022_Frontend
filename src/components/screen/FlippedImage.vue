@@ -21,17 +21,17 @@ export default {
       cells: [],
       col: 10,
       row: 10,
-      aspectRatio: 16 / 9,
+      aspectRatio: 4 / 3,
       imageUrl: '',
-      mainImagePath: 'screen/main.png',
-      videoUrl: 'https://dhgt2022-frontend-app.s3.ap-southeast-1.amazonaws.com/welcome.mp4',
+      mainImagePath: 'screen/main.jpg',
+      videoUrl: 'https://dhgt2022-frontend-app.s3.ap-southeast-1.amazonaws.com/welcome2.mp4',
       isVideoPlayed: false,
     };
   },
   props: {
-    width: {
+    height: {
       type: Number,
-      default: 1066,
+      default: 600,
     },
   },
   created() {
@@ -61,8 +61,8 @@ export default {
     });
   },
   computed: {
-    height() {
-      return this.width / this.aspectRatio;
+    width() {
+      return this.height * this.aspectRatio;
     },
     mainViewStyles() {
       const styles = [`width: ${this.width}px`, `height: ${this.height}px`];

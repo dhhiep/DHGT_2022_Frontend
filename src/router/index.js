@@ -28,6 +28,12 @@ const routes = [
     meta: { authenticate: true },
   },
   {
+    path: '/screen',
+    name: 'screen',
+    component: SubScreen,
+    meta: { authenticate: true },
+  },
+  {
     path: '/sub-screen',
     name: 'sub-screen',
     component: SubScreen,
