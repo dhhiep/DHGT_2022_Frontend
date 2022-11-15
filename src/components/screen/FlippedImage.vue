@@ -180,7 +180,6 @@ export default {
     left: 0;
   }
 }
-
 #canvas {
   background-repeat: round;
   position: relative;
@@ -223,8 +222,5 @@ export default {
   > .front {
     opacity: 0;
   }
-}
-.back {
-  background: white;
 }
 </style>
