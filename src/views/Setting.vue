@@ -1,7 +1,17 @@
 <template>
   <div id="settings">
     <div class="row links">
-      <a href="/screen" target="_blank">Screen</a>
+      <a href="/screen?height=350" target="_blank">Screen (350px)</a>
+      <a href="/screen?height=400" target="_blank">Screen (400px)</a>
+      <a href="/screen?height=450" target="_blank">Screen (450px)</a>
+      <a href="/screen?height=500" target="_blank">Screen (500px)</a>
+      <a href="/screen?height=550" target="_blank">Screen (550px)</a>
+      <a href="/screen?height=600" target="_blank">Screen (600px)</a>
+      <a href="/screen?height=650" target="_blank">Screen (650px)</a>
+      <a href="/screen?height=700" target="_blank">Screen (700px)</a>
+      <a href="/screen?height=750" target="_blank">Screen (750px)</a>
+    </div>
+    <div class="row links">
       <a href="/main-screen" target="_blank">Main Screen</a>
       <a href="/video-screen" target="_blank">Video Screen</a>
       <a href="/qr-screen" target="_blank">QR Screen</a>
@@ -43,7 +53,7 @@ export default {
   data() {
     return {
       passphrase: '',
-      increaseTimes: [10, 50, 100, 200, 300, 1000],
+      increaseTimes: [10, 50, 100],
     };
   },
   methods: {
@@ -133,7 +143,6 @@ export default {
     margin-bottom: 10px;
     &.links {
       margin-bottom: 40px;
-      text-align: center;
       width: 100%;
       a {
         font-family: Arial, Helvetica, sans-serif;
