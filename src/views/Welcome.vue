@@ -16,7 +16,7 @@
           </div>
         </div>
         <div id="footer">
-          <div id="message">Chia sẻ QR Code này cho những bạn xung quanh nhé</div>
+          <div id="message">Chia sẻ mã QR</div>
           <img id="qr_code" src="@/assets/images/screen/qrcode.png" alt="" />
         </div>
       </div>
@@ -67,10 +67,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Alegreya:wght@500;600;800&display=swap');
 
 #page-wrapper {
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Alegreya', serif;
   padding: 0;
   display: flex;
   justify-content: center;
@@ -86,11 +86,9 @@ export default {
     justify-content: space-between;
     align-items: center;
     text-align: center;
-    // background-size: contain;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-
     #heading {
       margin-bottom: 15px;
       .heading-1 {
@@ -103,8 +101,8 @@ export default {
     }
     div#counter {
       font-weight: bold;
-      margin-bottom: 10px;
-      font-size: 60px;
+      font-size: 80px;
+      font-weight: 600;
     }
     #main-content {
       padding: 10px;
@@ -117,15 +115,18 @@ export default {
       #jesus_signature {
         text-align: right;
         font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 15px;
       }
     }
     #footer {
+      #message {
+        font-size: 25px;
+        margin-bottom: 15px;
+        font-weight: bold;
+      }
       #qr_code {
         font-size: 14px;
-      }
-      #message {
-        font-size: 14px;
-        margin-bottom: 30px;
       }
     }
   }
