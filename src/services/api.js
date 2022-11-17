@@ -8,6 +8,7 @@ export const apiCaller = (method, path, data = {}) => {
 
 const defaultAxiosDefaultSetting = (method, path, data = {}) => {
   const apiEndpoint = process.env.VUE_APP_BACKEND_URL;
+  const apiKey = process.env.VUE_APP_API_KEY;
 
   let axiosSetting = {
     method: method,
@@ -16,6 +17,7 @@ const defaultAxiosDefaultSetting = (method, path, data = {}) => {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
+      api_key: apiKey,
     },
   };
 
