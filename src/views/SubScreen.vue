@@ -54,7 +54,7 @@ export default {
       return styles.join(';');
     },
     height() {
-      return this.$route.query.height || 600;
+      return Number(this.$route.query.height || 600);
     },
     ...mapState(['screen']),
     ...mapGetters('flippedImage', ['currentCounter', 'currentOpenPieces']),
@@ -123,7 +123,7 @@ export default {
           padding: 20px;
         }
         @include responsiveFrom(large) {
-          font-size: 100px;
+          font-size: 85px;
         }
         &:before {
           content: '';
@@ -153,6 +153,10 @@ export default {
         }
         #text {
           margin-top: 15px;
+          min-width: 120px;
+          @include responsiveFrom(large) {
+            min-width: 175px;
+          }
         }
       }
       #qr_code {
