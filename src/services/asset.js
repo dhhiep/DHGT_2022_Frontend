@@ -11,7 +11,7 @@ export const fetch = () => {
     if (isPresent(loadLocalAsset())) {
       resolve(loadLocalAsset());
     } else {
-      apiCaller('POST', '/api/register').then((resp) => {
+      apiCaller('POST', '/api/register', {}, { attachApiKey: false }).then((resp) => {
         let resource = resp.data.data;
         resource.imageUrl = `${process.env.VUE_APP_PUBLIC_BUCKET}/${resource.image_file_name}`;
         storeLocalAsset(resource);

@@ -1,24 +1,19 @@
 import axios from 'axios';
 
-export const apiCaller = (method, path, data = {}) => {
-  const axiosDefaultSetting = defaultAxiosDefaultSetting(method, path, data);
+export const apiCaller = (method, path, data = {}, options = {}) => {
+  const axiosDefaultSetting = defaultAxiosDefaultSetting(method, path, data, options);
 
   return axios(axiosDefaultSetting);
 };
 
-const defaultAxiosDefaultSetting = (method, path, data = {}) => {
+const defaultAxiosDefaultSetting = (method, path, data = {}, options = {}) => {
   const apiEndpoint = process.env.VUE_APP_BACKEND_URL;
-  const apiKey = process.env.VUE_APP_API_KEY;
 
   let axiosSetting = {
     method: method,
     url: apiEndpoint + path,
     withCredentials: false,
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      api_key: apiKey,
-    },
+    headers: headers(options),
   };
 
   // Set request parameter or body
@@ -29,4 +24,21 @@ const defaultAxiosDefaultSetting = (method, path, data = {}) => {
   }
 
   return axiosSetting;
+};
+
+const headers = (options = {}) => {
+  if (options.attachApiKey == null) {
+    options.attachApiKey = true;
+  }
+
+  let headers = {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+  };
+
+  if (options.attachApiKey) {
+    headers.api_key = process.env.VUE_APP_API_KEY;
+  }
+
+  return headers;
 };
