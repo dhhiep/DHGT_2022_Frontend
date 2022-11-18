@@ -4,6 +4,7 @@ const KEYS = {
   AUTH: 'localAuth',
   ASSET: 'localAsset',
   FLIPPED_IMAGE: 'localFlippedImageData',
+  SETTING: 'localSetting',
 };
 
 //  STORE LOCAL DATA
@@ -12,6 +13,9 @@ export const storeLocalAuth = (authData) => {
 };
 export const storeLocalAsset = (assetData) => {
   return setItem(KEYS.ASSET, assetData);
+};
+export const storeLocalSetting = (settingData) => {
+  return setItem(KEYS.SETTING, settingData);
 };
 export const storeLocalFlippedImageData = (flippedImageData) => {
   return setItem(KEYS.FLIPPED_IMAGE, flippedImageData);
@@ -23,6 +27,9 @@ export const loadLocalAuth = () => {
 };
 export const loadLocalAsset = () => {
   return getItem(KEYS.ASSET);
+};
+export const loadLocalSetting = () => {
+  return getItem(KEYS.SETTING);
 };
 export const loadLocalFlippedImageData = () => {
   return getItem(KEYS.FLIPPED_IMAGE);
@@ -40,6 +47,7 @@ export const clearLocalAsset = () => {
 export const restoreLocalData = async () => {
   store.dispatch('auth/setAuthData', loadLocalAuth(), { root: true });
   store.dispatch('flippedImage/setFlippedImageData', loadLocalFlippedImageData(), { root: true });
+  store.dispatch('setting/setSetting', loadLocalSetting(), { root: true });
 };
 
 // PRIVATE

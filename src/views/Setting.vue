@@ -1,52 +1,56 @@
 <template>
   <div id="settings">
-    <div class="row links">
-      <a href="/screen?height=350" target="_blank">Screen (350px)</a>
-      <a href="/screen?height=400" target="_blank">Screen (400px)</a>
-      <a href="/screen?height=450" target="_blank">Screen (450px)</a>
-      <a href="/screen?height=500" target="_blank">Screen (500px)</a>
-      <a href="/screen?height=550" target="_blank">Screen (550px)</a>
-      <a href="/screen?height=600" target="_blank">Screen (600px)</a>
-      <a href="/screen?height=650" target="_blank">Screen (650px)</a>
-      <a href="/screen?height=700" target="_blank">Screen (700px)</a>
-      <a href="/screen?height=750" target="_blank">Screen (750px)</a>
+    <div class="panel">
+      <div class="heading">Actions</div>
+      <div class="content">
+        <div class="row">
+          <button class="reset-counter" @click="reset">Reset Counter</button>
+        </div>
+        <div class="row">
+          <div class="title">Increase Counter Online (in 10 seconds):</div>
+          <button
+            class="increase-counter-online"
+            @click="triggerIncreaseCounterOnline(times)"
+            v-for="(times, index) in increaseTimes"
+            :key="index"
+          >
+            Increase {{ times }} Counter(s)
+          </button>
+        </div>
+        <div class="row">
+          <div class="title">Increase Counter Offline (in 10 seconds):</div>
+          <button
+            class="increase-counter-offline"
+            @click="triggerIncreaseCounterOffline(times)"
+            v-for="(times, index) in increaseTimes"
+            :key="index"
+          >
+            Increase {{ times }} Counter(s)
+          </button>
+        </div>
+      </div>
     </div>
-    <div class="row links">
-      <a href="/main-screen" target="_blank">Main Screen</a>
-      <a href="/video-screen" target="_blank">Video Screen</a>
-      <a href="/qr-screen" target="_blank">QR Screen</a>
-    </div>
-    <hr />
-    <div class="row">
-      <button class="reset-counter" @click="reset">Reset Counter</button>
-    </div>
-    <div class="row">
-      <div class="heading">Increase Counter Online (in 10 seconds):</div>
-      <button
-        class="increase-counter-online"
-        @click="triggerIncreaseCounterOnline(times)"
-        v-for="(times, index) in increaseTimes"
-        :key="index"
-      >
-        Increase {{ times }} Counter(s)
-      </button>
-    </div>
-    <div class="row">
-      <div class="heading">Increase Counter Offline (in 10 seconds):</div>
-      <button
-        class="increase-counter-offline"
-        @click="triggerIncreaseCounterOffline(times)"
-        v-for="(times, index) in increaseTimes"
-        :key="index"
-      >
-        Increase {{ times }} Counter(s)
-      </button>
+    <div class="panel">
+      <div class="heading">Settings</div>
+      <div class="content">
+        <div class="row">
+          <div id="setting-form">
+            <div class="form-group">
+              <label for="max-counter">Max Counter</label>
+              <input type="number" id="max-counter" name="maxCounter" v-model="formData.maxCounter" />
+            </div>
+            <div class="form-group text-right">
+              <button @click="submitSettings">Update</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import * as BroadcastChannel from '@/utils/broadcast_channel';
 
 export default {
@@ -54,7 +58,15 @@ export default {
     return {
       passphrase: '',
       increaseTimes: [10, 50, 100],
+      formData: {
+        maxCounter: 0,
+      },
     };
+  },
+  created() {
+    setTimeout(() => {
+      this.formData.maxCounter = this.maxCounter;
+    }, 100);
   },
   methods: {
     getRandomInt(max) {
@@ -80,6 +92,30 @@ export default {
         }, this.getRandomInt(10000 + times * 100));
       });
     },
+    submitSettings() {
+      this.$swal
+        .fire({
+          title: 'Are you sure?',
+          text: 'Do you want to update?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes',
+        })
+        .then((result) => {
+          if (result.isConfirmed) {
+            const settings = {
+              maxCounter: Number(this.formData.maxCounter),
+            };
+
+            console.log(settings);
+            this.updateSettings(settings).then(() => {
+              this.$swal.fire('Success', 'Your settings was updated', 'success');
+            });
+          }
+        });
+    },
     reset() {
       this.$swal
         .fire({
@@ -89,7 +125,7 @@ export default {
           showCancelButton: true,
           confirmButtonColor: '#3085d6',
           cancelButtonColor: '#d33',
-          confirmButtonText: 'Yes, reset it!',
+          confirmButtonText: 'Yes',
         })
         .then((result) => {
           if (result.isConfirmed) {
@@ -102,24 +138,27 @@ export default {
           }
         });
     },
-    ...mapActions('flippedImage', ['resetFlippedImageData', 'reloadFlippedImageData']),
-    ...mapActions('setting', ['increaseCounterOnline', 'resetCounter']),
-    ...mapActions('flippedImage', ['increaseCounter']),
+    ...mapActions('flippedImage', ['resetFlippedImageData', 'reloadFlippedImageData', 'increaseCounter']),
+    ...mapActions('setting', ['increaseCounterOnline', 'resetCounter', 'updateSettings']),
   },
-  computed: {},
+  computed: {
+    ...mapGetters('setting', ['maxCounter']),
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Alegreya:wght@500;600;800&display=swap');
 
 #settings {
+  font-family: 'Alegreya', serif;
   display: flex;
   width: 100%;
   height: 100vh;
   justify-content: center;
   align-items: flex-start;
   flex-direction: column;
+  padding: 20px;
   button {
     cursor: pointer;
     padding: 8px 15px;
@@ -129,7 +168,7 @@ export default {
     background-color: rgb(25, 135, 84);
     color: #fff;
     margin: 10px;
-
+    font-family: 'Alegreya', serif;
     &.reset-counter {
       background-color: #dc3545;
     }
@@ -137,24 +176,54 @@ export default {
       background-color: #6c757d;
     }
   }
-
-  .row {
-    flex-direction: row;
-    margin-bottom: 10px;
-    &.links {
-      margin-bottom: 40px;
-      width: 100%;
-      a {
-        font-family: Arial, Helvetica, sans-serif;
-        margin: 10px;
-        text-decoration: none;
-        font-size: 18px;
-      }
-    }
+  .panel {
+    width: 100%;
+    margin-bottom: 15px;
     .heading {
-      padding: 0 10px;
-      font-family: arial;
-      font-weight: 15px;
+      background-color: #e2d7d7;
+      padding: 10px;
+      font-size: 18px;
+      border-radius: 5px 5px 0 0;
+      color: #403939;
+      border: 1px solid #e2d7d7;
+      border-bottom: none;
+    }
+    .content {
+      padding: 10px;
+      border-radius: 0 0 5px 5px;
+      border: 1px solid #e2d7d7;
+      .row {
+        flex-direction: row;
+        margin-bottom: 10px;
+        &.links {
+          margin-bottom: 40px;
+          width: 100%;
+          a {
+            margin: 10px;
+            text-decoration: none;
+            font-size: 18px;
+          }
+        }
+        .title {
+          padding: 0 10px;
+          font-weight: 15px;
+        }
+
+        .form-group {
+          display: flex;
+          align-items: center;
+          &.text-right {
+            justify-content: flex-end;
+          }
+          label {
+            margin: 0 10px;
+          }
+          input {
+            padding: 10px;
+            border: 1px solid #e2d7d7;
+          }
+        }
+      }
     }
   }
 }

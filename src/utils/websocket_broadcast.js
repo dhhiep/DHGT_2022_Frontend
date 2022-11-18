@@ -1,3 +1,4 @@
+import { snakeToCamelCase } from '@/utils/object.js';
 import { blankFunc } from '@/utils/lang';
 
 export const establish_ws_broadcast_channel = (
@@ -17,8 +18,7 @@ export const establish_ws_broadcast_channel = (
   socket.onmessage = function (event) {
     const data = JSON.parse(event.data);
 
-    console.log('onMessage', data);
-    onMessage(data);
+    onMessage(snakeToCamelCase(data));
   };
 
   socket.onclose = function (event) {

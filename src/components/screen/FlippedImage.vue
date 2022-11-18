@@ -25,7 +25,7 @@ export default {
       aspectRatio: 4 / 3,
       imageUrl: '',
       mainImagePath: 'screen/main.jpg',
-      videoUrl: 'https://dhgt2022-frontend-app.s3.ap-southeast-1.amazonaws.com/welcome2.mp4',
+      videoUrl: 'https://dhgt2022-frontend-app.s3.ap-southeast-1.amazonaws.com/welcome.mp4',
       isVideoPlayed: false,
       animationClasses: 'animate__animated animate__bounceInDown',
     };
@@ -152,6 +152,10 @@ export default {
       socket.send('#status');
     },
     ws_on_message(data) {
+      const whitelistActions = [undefined, 'reset'];
+      if (!whitelistActions.includes(data.type)) return;
+
+      console.log('FlippedImage#onMessage', data);
       if (data.type === 'reset') {
         console.log('[FlippedImage#ws_on_message] Reset counter');
 
