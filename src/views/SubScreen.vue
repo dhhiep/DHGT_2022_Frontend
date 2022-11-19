@@ -39,14 +39,26 @@ export default {
       openFullscreen();
 
       if (event.key == 'ArrowRight') {
-        self.increaseCounter().then(() => {
-          BroadcastChannel.sendMessage({ type: 'counterUpdated' });
-        });
+        self.triggerIncreaseCounterOffline(20);
       }
     });
   },
   methods: {
-    ...mapActions('flippedImage', ['increaseCounter']),
+    getRandomInt(max) {
+      return Math.floor(Math.random() * max);
+    },
+    triggerIncreaseCounterOffline(times) {
+      this.reloadFlippedImageData();
+
+      Array.from({ length: times }, () => {
+        setTimeout(() => {
+          this.increaseCounter().then(() => {
+            BroadcastChannel.sendMessage({ type: 'counterUpdated' });
+          });
+        }, this.getRandomInt(10000 + times * 100));
+      });
+    },
+    ...mapActions('flippedImage', ['increaseCounter', 'reloadFlippedImageData']),
   },
   computed: {
     leftSideContentWrapperStyles() {
